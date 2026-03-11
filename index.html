@@ -2,12 +2,20 @@
 <html lang="pt-BR">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Raspadinha Tales Lanches</title>
 
 <link rel="stylesheet" href="style.css">
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<script src="firebase.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0"></script>
 
 </head>
 
@@ -16,10 +24,9 @@
 <div id="inicio">
 
 <h1>🍔 Tales Lanches</h1>
+<h2>Parabéns!</h2>
 
-<h2>🎉 Parabéns!</h2>
-
-<p>Você ganhou uma chance na raspadinha!</p>
+<p>Você ganhou uma raspadinha</p>
 
 <button onclick="comecar()">Começar</button>
 
@@ -29,7 +36,7 @@
 
 <h2>Escolha uma raspadinha</h2>
 
-<div class="grid" id="grid"></div>
+<div id="grid"></div>
 
 </div>
 
