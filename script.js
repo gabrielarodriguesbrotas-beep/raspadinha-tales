@@ -1,59 +1,96 @@
-const canvas = document.getElementById("canvas")
-const ctx = canvas.getContext("2d")
-
-canvas.width = 320
-canvas.height = 160
-
-ctx.fillStyle = "#c0c0c0"
-ctx.fillRect(0,0,320,160)
-
-ctx.fillStyle = "black"
-ctx.font = "20px Arial"
-ctx.fillText("RASPE AQUI",100,80)
-
-const spatula = document.getElementById("spatula")
-
-const scratchSound = document.getElementById("scratchSound")
-const winSound = document.getElementById("winSound")
-
-let raspando = false
-let revelado = false
-
 const premios = [
-"🥤 Refrigerante Lata",
-"💰 Desconto R$5",
-"🚚 Entrega Grátis",
-"🧄 +5 Maioneses"
+
+"🥤 Refrigerante",
+"💰 Desconto 5",
+"🚚 Entrega grátis",
+"🧄 +5 Maioneses",
+"🥤 Refrigerante",
+"💰 Desconto 5"
+
 ]
 
-const premio = premios[Math.floor(Math.random()*premios.length)]
+let escolhido = false
 
-document.getElementById("premio").innerHTML = premio
+function comecar(){
 
-canvas.addEventListener("touchstart",()=>raspando=true)
-canvas.addEventListener("touchend",()=>raspando=false)
+document.getElementById("inicio").style.display="none"
 
-canvas.addEventListener("touchmove",raspar)
+document.getElementById("jogo").style.display="block"
 
-function raspar(e){
+criarCartas()
 
-if(!raspando) return
+setTimeout(virarCartas,3000)
 
-const rect = canvas.getBoundingClientRect()
+}
 
-const x = e.touches[0].clientX - rect.left
-const y = e.touches[0].clientY - rect.top
+function criarCartas(){
 
-spatula.style.left = x-35+"px"
-spatula.style.top = y-35+"px"
+const grid = document.getElementById("grid")
 
-scratchSound.currentTime = 0
-scratchSound.play()
+premios.sort(()=>Math.random()-0.5)
 
-ctx.globalCompositeOperation = "destination-out"
+premios.forEach(p=>{
 
-ctx.beginPath()
-ctx.arc(x,y,18,0,Math.PI*2)
-ctx.fill()
+let card = document.createElement("div")
+
+card.className="card"
+
+card.innerHTML=p
+
+card.dataset.premio=p
+
+card.onclick=()=>raspar(card)
+
+grid.appendChild(card)
+
+})
+
+}
+
+function virarCartas(){
+
+document.querySelectorAll(".card").forEach(c=>{
+
+c.classList.add("virada")
+
+c.innerHTML="🎟️"
+
+})
+
+embaralhar()
+
+}
+
+function embaralhar(){
+
+let vezes = 20
+
+let intervalo = setInterval(()=>{
+
+let grid = document.getElementById("grid")
+
+for(let i=grid.children.length;i>=0;i--){
+
+grid.appendChild(grid.children[Math.random()*i|0])
+
+}
+
+vezes--
+
+if(vezes<=0) clearInterval(intervalo)
+
+},100)
+
+}
+
+function raspar(card){
+
+if(escolhido) return
+
+escolhido=true
+
+card.innerHTML = card.dataset.premio
+
+document.getElementById("winSound").play()
 
 }
