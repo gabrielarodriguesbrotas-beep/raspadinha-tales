@@ -9,37 +9,33 @@ const premios = [
 
 ]
 
-let escolhido = false
+let escolhido=false
 
 function comecar(){
 
 document.getElementById("inicio").style.display="none"
 
-document.getElementById("jogo").style.display="block"
-
 criarCartas()
-
-setTimeout(virarCartas,3000)
 
 }
 
 function criarCartas(){
 
-const grid = document.getElementById("grid")
+const grid=document.getElementById("grid")
 
 premios.sort(()=>Math.random()-0.5)
 
 premios.forEach(p=>{
 
-let card = document.createElement("div")
+let card=document.createElement("div")
 
 card.className="card"
 
-card.innerHTML=p
+card.innerHTML="🎟️"
 
 card.dataset.premio=p
 
-card.onclick=()=>raspar(card)
+card.onclick=()=>revelar(card)
 
 grid.appendChild(card)
 
@@ -47,50 +43,24 @@ grid.appendChild(card)
 
 }
 
-function virarCartas(){
-
-document.querySelectorAll(".card").forEach(c=>{
-
-c.classList.add("virada")
-
-c.innerHTML="🎟️"
-
-})
-
-embaralhar()
-
-}
-
-function embaralhar(){
-
-let vezes = 20
-
-let intervalo = setInterval(()=>{
-
-let grid = document.getElementById("grid")
-
-for(let i=grid.children.length;i>=0;i--){
-
-grid.appendChild(grid.children[Math.random()*i|0])
-
-}
-
-vezes--
-
-if(vezes<=0) clearInterval(intervalo)
-
-},100)
-
-}
-
-function raspar(card){
+function revelar(card){
 
 if(escolhido) return
 
 escolhido=true
 
-card.innerHTML = card.dataset.premio
+card.innerHTML=card.dataset.premio
 
 document.getElementById("winSound").play()
+
+navigator.vibrate([200,100,200])
+
+confetti({
+
+particleCount:150,
+
+spread:90
+
+})
 
 }
