@@ -1,3 +1,7 @@
+const params = new URLSearchParams(window.location.search)
+
+const codigo = params.get("codigo")
+
 const premios = [
 
 "🥤 Refrigerante",
